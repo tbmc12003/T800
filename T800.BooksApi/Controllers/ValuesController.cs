@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 namespace T800.BooksApi.Controllers
 {
@@ -10,11 +9,22 @@ namespace T800.BooksApi.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private Random random => new Random();
+        private const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            List<string> result = new List<string>();
+            for (int i = 0; i < 10000; i++)
+            {
+                var newRandomString = new string(Enumerable.Repeat(chars, 12)
+                                .Select(s => s[random.Next(s.Length)]).ToArray());
+
+                result.Add(newRandomString);
+            }
+
+            return result;
         }
 
         // GET api/values/5
